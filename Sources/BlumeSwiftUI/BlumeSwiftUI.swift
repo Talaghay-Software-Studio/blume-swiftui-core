@@ -58,7 +58,7 @@ public struct BlumeMainTextField: View {
                 .foregroundColor(Color(hex: "#303030"))
             HStack {
                 Image("\(imageName)")
-                    .foregroundColor(Color(hex: "#ABA7A7"))
+                    .resizable()
                     .frame(width: 24, height: 24)
                 TextField(placeholder, text: $text)
                     .font(.aeonikRegular(size: 18))
