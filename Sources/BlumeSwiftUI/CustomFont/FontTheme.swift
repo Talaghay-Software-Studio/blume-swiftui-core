@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-import SwiftUI
-
-extension Font {
+public extension Font {
     // MARK: - Aeonik TRIAL Fonts
     static func aeonikRegular(size: CGFloat) -> Font {
         .custom("AeonikTRIAL-Regular", size: size)

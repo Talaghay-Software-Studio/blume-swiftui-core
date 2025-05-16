@@ -1,20 +1,45 @@
 //
 //  BlumeMainTextField.swift
-//  blume-swiftui-core
+//  BlumeSwiftUI
 //
 //  Created by Kent Onyx Arintok on 5/17/25.
 //
 
 import SwiftUI
 
-struct BlumeMainTextField: View {
+/// A customizable text field component with a label and icon.
+///
+/// This component provides a styled text field with a label, placeholder, and an optional icon.
+/// It's designed to be used in forms and input sections of your app.
+///
+/// ```swift
+/// BlumeMainTextField(
+///     label: "Email",
+///     placeholder: "Enter your email",
+///     imageName: "envelope",
+///     text: $emailText
+/// )
+/// ```
+public struct BlumeMainTextField: View {
+    /// The label text displayed above the text field
+    public let label: String
     
-    let label: String
-    let placeholder: String
-    let imageName: String
-    @Binding var text: String
+    /// The placeholder text shown when the text field is empty
+    public let placeholder: String
     
-    init(
+    /// The name of the SF Symbol or asset to display as an icon
+    public let imageName: String
+    
+    /// The binding to the text value
+    @Binding public var text: String
+    
+    /// Creates a new BlumeMainTextField
+    /// - Parameters:
+    ///   - label: The label text displayed above the text field
+    ///   - placeholder: The placeholder text shown when the text field is empty
+    ///   - imageName: The name of the SF Symbol or asset to display as an icon
+    ///   - text: A binding to the text value
+    public init(
         label: String,
         placeholder: String,
         imageName: String,
@@ -26,7 +51,7 @@ struct BlumeMainTextField: View {
         self._text = text
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(label)
                 .font(.aeonikRegular(size: 16))
@@ -55,4 +80,4 @@ struct BlumeMainTextField: View {
         imageName: "envelope",
         text: .constant("")
     )
-}
+} 

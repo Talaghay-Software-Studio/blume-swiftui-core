@@ -1,24 +1,26 @@
-// swift-tools-version:5.9
+// swift-tools-version: 6.0
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
 import PackageDescription
 
 let package = Package(
     name: "BlumeSwiftUI",
-    platforms: [
-        .iOS(.v16),
-        .macOS(.v13)
-    ],
+    platforms: [.iOS(.v17)],
     products: [
+        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "BlumeSwiftUI",
             targets: ["BlumeSwiftUI"]),
     ],
-    dependencies: [],
     targets: [
         .target(
             name: "BlumeSwiftUI",
-            dependencies: []),
-        .testTarget(
-            name: "BlumeSwiftUITests",
-            dependencies: ["BlumeSwiftUI"]),
+            dependencies: [],
+            path: "Sources/BlumeSwiftUI",
+            resources: [
+                .process("CustomFont/Aeonik"),
+                .process("CustomFont/Crapaud")
+            ]
+        )
     ]
-) 
+)
