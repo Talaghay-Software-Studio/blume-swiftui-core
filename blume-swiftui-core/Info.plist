@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>UIAppFonts</key>
+        <array>
+            <string>AeonikTRIAL-Bold.otf</string>
+            <string>AeonikTRIAL-BoldItalic.otf</string>
+            <string>AeonikTRIAL-Light.otf</string>
+            <string>AeonikTRIAL-LightItalic.otf</string>
+            <string>AeonikTRIAL-Regular.otf</string>
+            <string>AeonikTRIAL-RegularItalic.otf</string>
+            <string>Crapaud_gros.otf</string>
+            <string>Crapaud_petit.otf</string>
+        </array>
+    </dict>
+</plist>
