@@ -64,6 +64,7 @@ public struct BlumeMainTextField: View {
                     .font(.aeonikRegular(size: 18))
                     .foregroundColor(.black)
                     .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
             }
             .padding()
             .background(Color(hex: "#F2F2F2"))
