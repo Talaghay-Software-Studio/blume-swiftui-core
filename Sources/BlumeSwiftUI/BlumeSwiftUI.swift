@@ -54,7 +54,7 @@ public struct BlumeMainTextField: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(label)
-                .font(.aeonikRegular(size: 16))
+                .font(.aeonikRegular(size: 18))
                 .foregroundColor(Color(hex: "#303030"))
             HStack {
                 Image("\(imageName)")
@@ -64,7 +64,6 @@ public struct BlumeMainTextField: View {
                     .font(.aeonikRegular(size: 18))
                     .foregroundColor(.black)
                     .disableAutocorrection(true)
-                    .autocapitalization(.none)
             }
             .padding()
             .background(Color(hex: "#F2F2F2"))
