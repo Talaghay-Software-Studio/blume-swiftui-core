@@ -9,15 +9,18 @@ import SwiftUI
 
 public struct BlumeNextButton: View {
     
+    public var nextTitle: String
     public var nextAction: () -> Void
     public var tryAgainAction: () -> Void
     public var showTryAgain: Bool
     
     public init(
+        nextTitle: String = "Next",
         showTryAgain: Bool = false,
         tryAgainAction: @escaping () -> Void = {},
         nextAction: @escaping () -> Void = {}
     ) {
+        self.nextTitle = nextTitle
         self.showTryAgain = showTryAgain
         self.tryAgainAction = tryAgainAction
         self.nextAction = nextAction
@@ -47,7 +50,7 @@ public struct BlumeNextButton: View {
                 
                 
                 Button(action: nextAction) {
-                    Text("Next")
+                    Text(nextTitle)
                         .font(.aeonikLight(size: 18))
                         .foregroundStyle(Color(hex: "#303030"))
                 }
@@ -63,7 +66,8 @@ public struct BlumeNextButton: View {
 }
 
 #Preview {
-    BlumeNextButton(showTryAgain: false,
+    BlumeNextButton(nextTitle: "Continue",
+                    showTryAgain: false,
                     tryAgainAction: { /*try again action*/ },
                     nextAction: { /*next action*/ }
     )
