@@ -36,28 +36,26 @@ public struct BlumeNextButton: View {
                         Text("Try Again")
                             .font(.aeonikLight(size: 18))
                             .foregroundStyle(Color(hex: "#303030"))
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(hex: "#F8F7F6"))
+                            .cornerRadius(50)
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color(hex: "#F8F7F6"))
-                    .cornerRadius(50)
                 } else {
-                    Button(action: {}) {
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
+                    Color.clear
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
                 }
-                
                 
                 Button(action: nextAction) {
                     Text(nextTitle)
                         .font(.aeonikLight(size: 18))
                         .foregroundStyle(Color(hex: "#303030"))
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color(hex: "#C0C0C0").opacity(0.5))
+                        .cornerRadius(50)
                 }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(hex: "#C0C0C0").opacity(0.5))
-                .cornerRadius(50)
             }
             .padding(.horizontal)
             .padding(.bottom, 100)
