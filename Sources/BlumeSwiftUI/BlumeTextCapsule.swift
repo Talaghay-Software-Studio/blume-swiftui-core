@@ -156,14 +156,12 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
         
         var body: some View {
             VStack(spacing: 20) {
-                Text("Single Selection")
                 BlumeTextCapsule(
                     items: ["English", "Hebrew", "Mandarin Chinese", "Arabic", "French", "Japanese"],
                     selectedItems: $singleSelectedItems,
                     selectionMode: .single
                 )
-                
-                Text("Multiple Selection (Max 3)")
+
                 BlumeTextCapsule(
                     items: ["English", "Hebrew", "Mandarin Chinese", "Arabic", "French", "Japanese"],
                     selectedItems: $multipleSelectedItems,
