@@ -70,7 +70,7 @@ public struct BlumeTextCapsule: View {
             }
             .disabled(selectionMode.isMultiple && !selectedItems.contains(item) && selectedItems.count >= selectionMode.maxCount)
         }
-        .padding(.horizontal)
+//        .padding(.horizontal)
     }
 }
 
