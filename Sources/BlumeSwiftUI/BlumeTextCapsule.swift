@@ -103,6 +103,7 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
     let content: (Data.Element) -> Content
 
     @State private var sizes: [AnyHashable: CGSize] = [:]
+    @State private var totalHeight: CGFloat = 0
 
     var body: some View {
         GeometryReader { geometry in
@@ -110,7 +111,7 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
                 // Hidden layout for measuring
                 ForEach(items, id: \.self) { item in
                     content(item)
-                        .fixedSize() // Important: prevents it from stretching
+                        .fixedSize()
                         .background(
                             GeometryReader { geo in
                                 Color.clear
@@ -129,7 +130,11 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
             .onPreferenceChange(SizePreferenceKey.self) { preferences in
                 self.sizes = preferences
             }
+            .onPreferenceChange(HeightPreferenceKey.self) { height in
+                self.totalHeight = height
+            }
         }
+        .frame(height: totalHeight) // This constrains the GeometryReader to only the needed height
     }
 
     private func generateLayout(in geometry: GeometryProxy) -> some View {
@@ -137,7 +142,7 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
         var rows: [[Data.Element]] = [[]]
 
         for item in items {
-            let itemSize = sizes[item] ?? CGSize(width: 100, height: 40) // Fallback
+            let itemSize = sizes[item] ?? CGSize(width: 100, height: 40)
             if width + itemSize.width + itemSpacing > geometry.size.width {
                 rows.append([item])
                 width = itemSize.width + itemSpacing
@@ -156,6 +161,12 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
                 }
             }
         }
+        .background(
+            GeometryReader { geo in
+                Color.clear
+                    .preference(key: HeightPreferenceKey.self, value: geo.size.height)
+            }
+        )
     }
 }
 
@@ -168,6 +179,15 @@ private struct SizePreferenceKey: @preconcurrency PreferenceKey {
     }
 }
 
+// PreferenceKey to collect height info
+private struct HeightPreferenceKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
 #Preview {
     struct PreviewWrapper: View {
         @State var singleSelectedItems: [String] = ["English"]
@@ -176,16 +196,16 @@ private struct SizePreferenceKey: @preconcurrency PreferenceKey {
         var body: some View {
             VStack(spacing: 20) {
                 BlumeTextCapsule(
-                    items: ["🎒 High School", "🏫 Some College", "📗 Associate Degree", "🎓 Bachelor’s Degree", "📘 Master’s Degree", "🧠 Doctorate / PhD","❓Prefer Not to Say"],
+                    items: ["🎒 High School", "🏫 Some College", "📗 Associate Degree", "🎓 Bachelor's Degree", "📘 Master's Degree", "🧠 Doctorate / PhD","❓Prefer Not to Say"],
                     selectedItems: $singleSelectedItems,
                     selectionMode: .single
                 )
 
-                BlumeTextCapsule(
-                    items: ["English", "Hebrew", "Mandarin Chinese", "Arabic", "French", "Japanese"],
-                    selectedItems: $multipleSelectedItems,
-                    selectionMode: .multiple(maxCount: 4)
-                )
+//                BlumeTextCapsule(
+//                    items: ["English", "Hebrew", "Mandarin Chinese", "Arabic", "French", "Japanese"],
+//                    selectedItems: $multipleSelectedItems,
+//                    selectionMode: .multiple(maxCount: 4)
+//                )
             }
         }
     }
