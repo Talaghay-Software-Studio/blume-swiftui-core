@@ -57,7 +57,7 @@ public struct BlumeTextCapsule: View {
                 }
             }) {
                 Text(item)
-                    .font(.aeonikRegular(size: 20))
+                    .font(.aeonikRegular(size: 16))
                     .foregroundStyle(.white)
                     .lineLimit(1)
                     .truncationMode(.tail)
