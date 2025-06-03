@@ -57,12 +57,12 @@ public struct BlumeTextCapsule: View {
                 }
             }) {
                 Text(item)
-                    .font(.aeonikRegular(size: 16))
+                    .font(.aeonikRegular(size: 15))
                     .foregroundStyle(.white)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .padding(.vertical, 9)
-                    .padding(.horizontal, 14)
+                    .padding(.horizontal, 15)
                     .background(
                         Capsule()
                             .fill(selectedItems.contains(item) ? Color(hex: "#327270") : .black)
@@ -70,7 +70,6 @@ public struct BlumeTextCapsule: View {
             }
             .disabled(selectionMode.isMultiple && !selectedItems.contains(item) && selectedItems.count >= selectionMode.maxCount)
         }
-//        .padding(.horizontal)
     }
 }
 
@@ -103,40 +102,51 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
     let rowSpacing: CGFloat
     let content: (Data.Element) -> Content
 
-    @State private var totalHeight: CGFloat = .zero
+    @State private var sizes: [AnyHashable: CGSize] = [:]
 
     var body: some View {
         GeometryReader { geometry in
-            self.generateContent(in: geometry)
+            ZStack(alignment: .topLeading) {
+                // Hidden layout for measuring
+                ForEach(items, id: \.self) { item in
+                    content(item)
+                        .fixedSize() // Important: prevents it from stretching
+                        .background(
+                            GeometryReader { geo in
+                                Color.clear
+                                    .preference(key: SizePreferenceKey.self, value: [AnyHashable(item): geo.size])
+                            }
+                        )
+                        .opacity(0)
+                        .accessibility(hidden: true)
+                }
+
+                // Actual layout once we have sizes
+                if sizes.keys.count == items.count {
+                    generateLayout(in: geometry)
+                }
+            }
+            .onPreferenceChange(SizePreferenceKey.self) { preferences in
+                self.sizes = preferences
+            }
         }
-        .frame(height: totalHeight)
     }
 
-    private func generateContent(in geometry: GeometryProxy) -> some View {
-        var width = CGFloat.zero
-        var height = CGFloat.zero
+    private func generateLayout(in geometry: GeometryProxy) -> some View {
+        var width: CGFloat = 0
         var rows: [[Data.Element]] = [[]]
 
         for item in items {
-            let label = UILabel()
-            label.font = UIFont.systemFont(ofSize: 20)
-            label.text = String(describing: item)
-            let labelWidth = min(label.intrinsicContentSize.width, 160)
-            let itemWidth = labelWidth + 36
-
-            if width + itemWidth > geometry.size.width {
-                width = 0
-                height += 38 + rowSpacing
+            let itemSize = sizes[item] ?? CGSize(width: 100, height: 40) // Fallback
+            if width + itemSize.width + itemSpacing > geometry.size.width {
                 rows.append([item])
-                width += itemWidth + itemSpacing
+                width = itemSize.width + itemSpacing
             } else {
                 rows[rows.count - 1].append(item)
-                width += itemWidth + itemSpacing
+                width += itemSize.width + itemSpacing
             }
         }
-        DispatchQueue.main.async {
-            self.totalHeight = height + 38
-        }
+
         return VStack(alignment: .leading, spacing: rowSpacing) {
             ForEach(rows, id: \.self) { row in
                 HStack(spacing: itemSpacing) {
@@ -149,6 +159,15 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
     }
 }
 
+// PreferenceKey to collect size info
+private struct SizePreferenceKey: @preconcurrency PreferenceKey {
+    @MainActor static let defaultValue: [AnyHashable: CGSize] = [:]
+
+    static func reduce(value: inout [AnyHashable: CGSize], nextValue: () -> [AnyHashable: CGSize]) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
+    }
+}
+
 #Preview {
     struct PreviewWrapper: View {
         @State var singleSelectedItems: [String] = ["English"]
@@ -157,7 +176,7 @@ struct FlowLayout<Data: RandomAccessCollection, Content: View>: View where Data.
         var body: some View {
             VStack(spacing: 20) {
                 BlumeTextCapsule(
-                    items: ["English", "Hebrew", "Mandarin Chinese", "Arabic", "French", "Japanese"],
+                    items: ["🎒 High School", "🏫 Some College", "📗 Associate Degree", "🎓 Bachelor’s Degree", "📘 Master’s Degree", "🧠 Doctorate / PhD","❓Prefer Not to Say"],
                     selectedItems: $singleSelectedItems,
                     selectionMode: .single
                 )
