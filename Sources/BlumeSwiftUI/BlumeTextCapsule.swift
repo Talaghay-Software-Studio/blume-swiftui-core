@@ -62,7 +62,7 @@ public struct BlumeTextCapsule: View {
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .padding(.vertical, 9)
-                    .padding(.horizontal, 18)
+                    .padding(.horizontal, 14)
                     .background(
                         Capsule()
                             .fill(selectedItems.contains(item) ? Color(hex: "#327270") : .black)
